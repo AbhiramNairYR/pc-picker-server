@@ -29,15 +29,26 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-// Enable CORS
-app.use(cors());
+// ✅ Enable CORS for your frontend URL
+app.use(
+  cors({
+    origin: "https://pc-picker-frontend.onrender.com",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
-// Mount the single API router
+// Alternative: allow localhost for development
+// app.use(
+//   cors({
+//     origin: ["http://localhost:5173", "https://pc-picker-frontend.onrender.com"],
+//     credentials: true,
+//   })
+// );
+
+// Mount the API router
 app.use('/api', require('./routes/api'));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(
-  PORT,
-  console.log(`Server running on port ${PORT}`)
-);
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
